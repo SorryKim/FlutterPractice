@@ -2,29 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:test3/models/webtoon_model.dart';
 import 'package:test3/services/api_service.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  List<WebtoonModel> webtoons = [];
-  bool isLoading = true;
-
-  void waitForWebToons() async {
-    webtoons = await ApiService.getTodays();
-    isLoading = false;
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    waitForWebToons();
-  }
+  final Future<List<WebtoonModel>> webtoons = ApiService.getTodays();
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +25,40 @@ class _HomeScreenState extends State<HomeScreen> {
         foregroundColor: Colors.white,
         elevation: 5,
       ),
-      body: const Row(),
+      body: FutureBuilder(
+          future: webtoons,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                children: [
+                  const SizedBox(
+                    height: 65,
+                  ),
+                  Expanded(
+                    child: makeList(snapshot),
+                  )
+                ],
+              );
+            }
+
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }),
+    );
+  }
+
+  ListView makeList(AsyncSnapshot<List<WebtoonModel>> snapshot) {
+    return ListView.separated(
+      scrollDirection: Axis.horizontal,
+      itemCount: snapshot.data!.length,
+      itemBuilder: (context, index) {
+        var webtoon = snapshot.data![index];
+        return Image.network(webtoon.thumb);
+      },
+      separatorBuilder: (context, index) => const SizedBox(
+        width: 40,
+      ),
     );
   }
 }
