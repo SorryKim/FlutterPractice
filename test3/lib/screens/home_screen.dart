@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test3/models/webtoon_model.dart';
+import 'package:test3/widgets/webtoon_widget.dart';
 import 'package:test3/services/api_service.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -34,9 +35,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(
                     height: 65,
                   ),
-                  Expanded(
-                    child: makeList(snapshot),
-                  )
+                  Expanded(child: makeList(snapshot)),
                 ],
               );
             }
@@ -51,13 +50,21 @@ class HomeScreen extends StatelessWidget {
   ListView makeList(AsyncSnapshot<List<WebtoonModel>> snapshot) {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(
+        vertical: 15,
+        horizontal: 15,
+      ),
       itemCount: snapshot.data!.length,
       itemBuilder: (context, index) {
         var webtoon = snapshot.data![index];
-        return Image.network(webtoon.thumb);
+        return Webtoon(
+          title: webtoon.title,
+          thumb: webtoon.thumb,
+          id: webtoon.id,
+        );
       },
       separatorBuilder: (context, index) => const SizedBox(
-        width: 40,
+        width: 50,
       ),
     );
   }
