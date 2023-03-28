@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "522585343125",
+    "project_id": "events-ddd01",
+    "storage_bucket": "events-ddd01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522585343125:android:07f9c83f2ab1b4550b879c",
+        "android_client_info": {
+          "package_name": "it.softwarehouse.events_book"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "522585343125-8h85fo562cvskf93df76fj2vdk3h2boj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-GcGulZ_6FdLj_4JO--emq7wuh2O020w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "522585343125-8h85fo562cvskf93df76fj2vdk3h2boj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
