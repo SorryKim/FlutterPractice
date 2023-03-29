@@ -27,7 +27,7 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
-  final FirebaseFirestore db = FirebaseFirestore.instance;
+  FirebaseFirestore db = FirebaseFirestore.instance;
   List<EventDetail> details = [];
 
   Future<List<EventDetail>> getDetailsList() async {
