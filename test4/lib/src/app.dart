@@ -8,15 +8,21 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (_, AsyncSnapshot<User?> user) {
-          if (user.hasData) {
-            return const Home();
-          } else {
-            return const Login();
-          }
-          return Container();
-        });
+    return Scaffold(
+      body: Row(
+        children: [
+          StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (_, AsyncSnapshot<User?> user) {
+                if (user.hasData) {
+                  return const Home();
+                } else {
+                  return const Login();
+                }
+                return Container();
+              }),
+        ],
+      ),
+    );
   }
 }
