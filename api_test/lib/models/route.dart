@@ -10,10 +10,3 @@ class Property {
         end_z = json['end_z'],
         cat_nam = json['cat_nam'];
 }
-
-class RouteModel {
-  final int id;
-  final List<Property> properties;
-
-  RouteModel.fromJson(Map<String, dynamic> json) : id = json['id']
-}
