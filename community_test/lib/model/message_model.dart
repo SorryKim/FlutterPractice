@@ -1,20 +1,20 @@
 class MessageModel {
   final String id;
-  final String content;
+  final String message;
 
-  MessageModel({this.id = '', this.content = ''});
+  MessageModel({this.id = '', this.message = ''});
 
   factory MessageModel.fromMap(
       {required String id, required Map<String, dynamic> map}) {
     return MessageModel(
       id: id,
-      content: map['content'] ?? '',
+      message: map['message'] ?? '',
     );
   }
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> data = {};
-    data['content'] = content;
+    data['message'] = message;
     return data;
   }
 }

@@ -2,10 +2,11 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
 import 'model/message_model.dart';
 
 class MessageListScreen extends StatefulWidget {
-  const MessageListScreen({super.key});
+  const MessageListScreen({Key? key}) : super(key: key);
 
   @override
   State<MessageListScreen> createState() => _MessageListScreenState();
@@ -15,30 +16,31 @@ class _MessageListScreenState extends State<MessageListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('메시지 리스트!'),
-      ),
+      appBar: AppBar(title: const Text('message list!')),
       body: StreamBuilder<List<MessageModel>>(
-        stream: streamMessages(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
+        stream: streamMessages(), //중계하고 싶은 Stream을 넣는다.
+        builder: (context, asyncSnapshot) {
+          if (!asyncSnapshot.hasData) {
+            //데이터가 없을 경우 로딩위젯을 표시한다.
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
+          } else if (asyncSnapshot.hasError) {
             return const Center(
-              child: Text('오류 발생!'),
+              child: Text('오류가 발생했습니다.'),
             );
           } else {
-            List<MessageModel> messages = snapshot.data!;
+            List<MessageModel> messages =
+                asyncSnapshot.data!; //비동기 데이터가 존재할 경우 리스트뷰 표시
             return Column(
+              mainAxisSize: MainAxisSize.max,
               children: [
                 Expanded(
                     child: ListView.builder(
                         itemCount: messages.length,
                         itemBuilder: (context, index) {
                           return ListTile(
-                            title: Text(messages[index].content),
+                            title: Text(messages[index].message),
                           );
-                        }))
+                        })),
               ],
             );
           }
@@ -51,7 +53,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
     try {
       //찾고자 하는 컬렉션의 스냅샷(Stream)을 가져온다.
       final Stream<QuerySnapshot> snapshots = FirebaseFirestore.instance
-          .collection('community/GrCghxu1wdgpbHBtJvTG/message')
+          .collection('community/GrCghxu1wdgpbHBtJvTG/messages')
           .snapshots();
 
       //새낭 스냅샷(Stream)내부의 자료들을 List<MessageModel> 로 변환하기 위해 map을 사용하도록 한다.
