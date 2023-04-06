@@ -25,7 +25,7 @@ class WritePage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                 ),
               ),
-            )
+            ),
           ],
         ));
   }
