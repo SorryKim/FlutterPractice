@@ -13,6 +13,8 @@ class MessageListScreen extends StatefulWidget {
 }
 
 class _MessageListScreenState extends State<MessageListScreen> {
+  TextEditingController controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +43,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
                             title: Text(messages[index].message),
                           );
                         })),
+                getInputWidget(),
               ],
             );
           }
@@ -73,5 +76,76 @@ class _MessageListScreenState extends State<MessageListScreen> {
       log('error)', error: ex.toString(), stackTrace: StackTrace.current);
       return Stream.error(ex.toString());
     }
+  }
+
+  void _onPressedSendButton() {
+    try {
+      MessageModel messageModel = MessageModel(
+        sendDate: Timestamp.now(),
+        message: controller.text,
+      );
+
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      firestore
+          .collection('community/GrCghxu1wdgpbHBtJvTG/messages')
+          .add(messageModel.toMap());
+    } catch (ex) {
+      log('error');
+    }
+  }
+
+  Widget getInputWidget() {
+    return Container(
+      height: 60,
+      width: double.infinity,
+      decoration: BoxDecoration(boxShadow: const [
+        BoxShadow(color: Colors.black12, offset: Offset(0, -2), blurRadius: 3)
+      ], color: Theme.of(context).bottomAppBarColor),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  labelStyle: const TextStyle(fontSize: 15),
+                  labelText: "내용을 입력하세요..",
+                  fillColor: Colors.white,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: const BorderSide(
+                      color: Colors.blue,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: const BorderSide(
+                      color: Colors.black26,
+                      width: 1.0,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            RawMaterialButton(
+              onPressed: _onPressedSendButton, //전송버튼을 누를때 동작시킬 메소드
+              constraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+              elevation: 2,
+              fillColor: Theme.of(context).colorScheme.primary,
+              shape: const CircleBorder(),
+              child: const Padding(
+                padding: EdgeInsets.all(10),
+                child: Icon(Icons.send),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
