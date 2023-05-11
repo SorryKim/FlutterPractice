@@ -1,27 +1,15 @@
-import "dart:convert";
-
-import "package:api_test/models/route.dart";
-import "package:http/http.dart" as http;
+import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = '';
-  static const String today = "today";
+  static const String baseUrl =
+      'https://apis.vworld.kr/2ddata/frstclimb/data?apiKey=FD8BE812-DB52-328F-828B-712A51614E8A&output=json&emdCd=11620103&srsName=EPSG:3857';
 
-  static Future<List<RouteModel>> getRoute() async {
-    List<RouteModel> routeInstances = [];
+  void getMountain() async {
     final url = Uri.parse(baseUrl);
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final List<dynamic> routes = jsonDecode(response.body);
-
-      for (var route in routes) {
-        routeInstances.add(RouteModel.fromJson(route));
-      }
-
-      return routeInstances;
+      print(response.body);
     }
-
-    throw Error();
   }
 }
